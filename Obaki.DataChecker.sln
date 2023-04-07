@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obaki.DataChecker", "Obaki.DataChecker.csproj", "{E7744997-C71B-4A11-BE4D-0E9D51C30372}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obaki.DataChecker", "src\Obaki.DataChecker\Obaki.DataChecker.csproj", "{E8183DBC-5DA2-4F4D-800B-98472C2F6619}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obaki.DataChecker.Tests", "tests\Obaki.DataChecker.Tests\Obaki.DataChecker.Tests.csproj", "{C981331E-92AF-4767-9248-CF8BE3D766EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E7744997-C71B-4A11-BE4D-0E9D51C30372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7744997-C71B-4A11-BE4D-0E9D51C30372}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7744997-C71B-4A11-BE4D-0E9D51C30372}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7744997-C71B-4A11-BE4D-0E9D51C30372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8183DBC-5DA2-4F4D-800B-98472C2F6619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8183DBC-5DA2-4F4D-800B-98472C2F6619}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8183DBC-5DA2-4F4D-800B-98472C2F6619}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8183DBC-5DA2-4F4D-800B-98472C2F6619}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C981331E-92AF-4767-9248-CF8BE3D766EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C981331E-92AF-4767-9248-CF8BE3D766EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C981331E-92AF-4767-9248-CF8BE3D766EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C981331E-92AF-4767-9248-CF8BE3D766EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
