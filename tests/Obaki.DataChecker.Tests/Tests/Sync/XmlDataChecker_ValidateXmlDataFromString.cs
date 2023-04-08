@@ -1,20 +1,23 @@
 ﻿using Obaki.DataChecker.Services;
 using Obaki.DataChecker.Tests.TestHelper;
-using FluentValidation.TestHelper;
-using FluentValidation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Obaki.DataChecker.Tests.Sync
+namespace Obaki.DataChecker.Tests.Tests.Sync
 {
-    public class XmlDataChecker_DeserializeInputString
+    public class XmlDataChecker_ValidateXmlDataFromString
     {
         private readonly XmlDataChecker<Orders> _xmlDataChecker;
-        public XmlDataChecker_DeserializeInputString()
+        public XmlDataChecker_ValidateXmlDataFromString()
         {
-            _xmlDataChecker = new XmlDataChecker<Orders>(new OrdersValidator()); 
+            _xmlDataChecker = new XmlDataChecker<Orders>(new OrdersValidator());
         }
 
         [Fact]
-        public void DeserializeInputString_ValidXmlInput_ShouldNotBeNull()
+        public void ValidateXmlDataFromString_ValidXmlInput_ShouldBeTrue()
         {
             //Arrange
             string xmlInput = @"<Orders>
@@ -28,36 +31,46 @@ namespace Obaki.DataChecker.Tests.Sync
                             </Orders>";
 
             //Act
-            var dummyObject = _xmlDataChecker.DeserializeInputString(xmlInput);
+            var validate = _xmlDataChecker.ValidateXmlDataFromString(xmlInput);
 
             //Assert
-            Assert.NotNull(dummyObject);
-            Assert.Equal(dummyObject.Order[0].Customer, "John Doe");
+            Assert.True(validate.IsValid);
         }
 
-
         [Fact]
-        public void DeserializeInputString_InValidXmlInput_ShouldNotBeNullAndInputIsSanitized()
+        public void ValidateXmlDataFromString_NoOrders_ShouldBeFalse()
         {
             //Arrange
             string xmlInput = @"<Orders>
-                                <Order OrderId=""1"" Customer=""John & % Doe"">
+                            </Orders>";
+
+            //Act
+            var validate = _xmlDataChecker.ValidateXmlDataFromString(xmlInput);
+
+            //Assert
+            Assert.False(validate.IsValid);
+        }
+
+        [Fact]
+        public void ValidateXmlDataFromString_CustomerIsEmpty_ShouldBeFalse()
+        {
+            //Arrange
+            string xmlInput = @"<Orders>
+                                <Order OrderId=""1"" Customer="""">
                                     <OrderItem ItemId=""101"" Description=""Widget"" Quantity=""3"" Price=""10.00"" />
                                     <OrderItem ItemId=""102"" Description=""Gadget"" Quantity=""2"" Price=""15.00"" />
                                 </Order>
-                                <Order OrderId=""2"" Customer=""Jane Smith"">
+                                <Order OrderId=""2"" Customer=""Test"">
                                     <OrderItem ItemId=""201"" Description=""Thingamabob"" Quantity=""1"" Price=""25.00"" />
                                 </Order>
                             </Orders>";
 
             //Act
-            var dummyObject = _xmlDataChecker.DeserializeInputString(xmlInput);
+            var validate = _xmlDataChecker.ValidateXmlDataFromString(xmlInput);
 
             //Assert
-            Assert.NotNull(dummyObject);
-            Assert.Equal(dummyObject.Order[0].Customer, "John   Doe");
-            Assert.True(!dummyObject.Order[0].Customer.Contains("&"));
-            Assert.True(!dummyObject.Order[0].Customer.Contains("%"));
+            Assert.False(validate.IsValid);
         }
+
     }
 }
