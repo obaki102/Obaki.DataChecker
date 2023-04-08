@@ -1,18 +1,18 @@
 ﻿using Obaki.DataChecker.Services;
 using Obaki.DataChecker.Tests.TestHelper;
 
-namespace Obaki.DataChecker.Tests.Tests.Sync
+namespace Obaki.DataChecker.Tests.Tests.Async
 {
-    public class XmlDataChecker_ValidateXmlDataFromString
+    public class XmlDataChecker_ValidateXmlDataFromStringAsync
     {
         private readonly XmlDataChecker<Orders> _xmlDataChecker;
-        public XmlDataChecker_ValidateXmlDataFromString()
+        public XmlDataChecker_ValidateXmlDataFromStringAsync()
         {
             _xmlDataChecker = new XmlDataChecker<Orders>(new OrdersValidator());
         }
 
         [Fact]
-        public void ValidateXmlDataFromString_ValidXmlInput_ShouldBeTrue()
+        public async Task ValidateXmlDataFromStringAsync_ValidXmlInput_ShouldBeTrue()
         {
             //Arrange
             string xmlInput = @"<Orders>
@@ -26,28 +26,28 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
                             </Orders>";
 
             //Act
-            var validate = _xmlDataChecker.ValidateXmlDataFromString(xmlInput);
+            var result = await _xmlDataChecker.ValidateXmlDataFromStringAsync(xmlInput);
 
             //Assert
-            Assert.True(validate.IsValid);
+            Assert.True(result.IsValid);
         }
 
         [Fact]
-        public void ValidateXmlDataFromString_NoOrders_ShouldBeFalse()
+        public async Task ValidateXmlDataFromStringAsync_NoOrders_ShouldBeFalse()
         {
             //Arrange
             string xmlInput = @"<Orders>
                             </Orders>";
 
             //Act
-            var validate = _xmlDataChecker.ValidateXmlDataFromString(xmlInput);
+            var result = await _xmlDataChecker.ValidateXmlDataFromStringAsync(xmlInput);
 
             //Assert
-            Assert.False(validate.IsValid);
+            Assert.False(result.IsValid);
         }
 
         [Fact]
-        public void ValidateXmlDataFromString_CustomerIsEmpty_ShouldBeFalse()
+        public async Task ValidateXmlDataFromStringAsync_CustomerIsEmpty_ShouldBeFalse()
         {
             //Arrange
             string xmlInput = @"<Orders>
@@ -61,10 +61,10 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
                             </Orders>";
 
             //Act
-            var validate = _xmlDataChecker.ValidateXmlDataFromString(xmlInput);
+            var result = await _xmlDataChecker.ValidateXmlDataFromStringAsync(xmlInput);
 
             //Assert
-            Assert.False(validate.IsValid);
+            Assert.False(result.IsValid);
         }
 
     }
