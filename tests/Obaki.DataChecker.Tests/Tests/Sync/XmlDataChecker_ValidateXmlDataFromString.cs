@@ -1,5 +1,8 @@
-﻿using Obaki.DataChecker.Services;
+﻿using Moq;
+using Obaki.DataChecker.Interfaces;
+using Obaki.DataChecker.Services;
 using Obaki.DataChecker.Tests.TestHelper;
+using System.Net.Http;
 
 namespace Obaki.DataChecker.Tests.Tests.Sync
 {
@@ -65,6 +68,72 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
 
             //Assert
             Assert.False(validate.IsValid);
+        }
+
+        [Fact]
+        public void ValidateXmlDataFromString_InValidXml_ShouldThrowInvalidOperationException()
+        {
+            //Arrange
+            string xmlInput = "<Invalid XML>";
+
+            //Act
+            var action = new Action(() => _xmlDataChecker.ValidateXmlDataFromString(xmlInput));
+
+            //Assert
+            Assert.Throws<InvalidOperationException>(action);
+        }
+
+        [Fact]
+        public void ValidateXmlDataFromString_NoXmlInput_ShouldThrowArgumentNullException()
+        {
+            //Arrange
+            string xmlInput = string.Empty;
+
+            //Act
+            var action = new Action(() => _xmlDataChecker.ValidateXmlDataFromString(xmlInput));
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(action);
+        }
+
+        [Fact]
+        public void ValidateXmlDataFromString_NullValidator_ShouldThrowArgumentNullException()
+        {
+            //Arrange
+            string xmlInput = string.Empty;
+            XmlDataChecker<Orders> _nullXmlDataChecker;
+
+            //Act
+            var action = new Action(() => _nullXmlDataChecker = new XmlDataChecker<Orders>(null));
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(action);
+        }
+
+
+        [Fact]
+        public void ValidateXmlDataFromString_DeserializedObjectIsNull_ShouldThrowArgumentNullException()
+        {
+            //Arrange
+            string xmlInput = @"<Orders>
+                                <Order OrderId=""1"" Customer="""">
+                                    <OrderItem ItemId=""101"" Description=""Widget"" Quantity=""3"" Price=""10.00"" />
+                                    <OrderItem ItemId=""102"" Description=""Gadget"" Quantity=""2"" Price=""15.00"" />
+                                </Order>
+                                <Order OrderId=""2"" Customer=""Test"">
+                                    <OrderItem ItemId=""201"" Description=""Thingamabob"" Quantity=""1"" Price=""25.00"" />
+                                </Order>
+                            </Orders>";
+
+            var mockXmlDataChecker = new Mock<IXmlDataChecker<Orders>>();
+            mockXmlDataChecker.Setup(x => x.ValidateXmlDataFromString(It.IsAny<string>())).Throws<ArgumentNullException>();
+
+            //Act
+            var action = new Action(() => mockXmlDataChecker.Object.ValidateXmlDataFromString(xmlInput));
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(action);
+
         }
 
     }

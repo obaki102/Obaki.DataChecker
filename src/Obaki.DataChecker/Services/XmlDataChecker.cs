@@ -7,9 +7,8 @@ using System.Xml.Serialization;
 
 namespace Obaki.DataChecker.Services
 {
-    internal sealed class XmlDataChecker<T> : IXmlDataChecker<T> where T : class
+    internal sealed partial class XmlDataChecker<T> : IXmlDataChecker<T> where T : class
     {
-        private const string XmlReservedCharactersPattern = "[&%]";
         private readonly IValidator<T> _validator;
 
         public XmlDataChecker(IValidator<T> validator)
@@ -24,7 +23,7 @@ namespace Obaki.DataChecker.Services
                 throw new ArgumentNullException(nameof(input), "Input string is null or empty.");
             }
 
-            string sanitized = Regex.Replace(input, XmlReservedCharactersPattern, "");
+            string sanitized = RemovedXmlReservedCharacters().Replace(input, "");
 
             using var reader = XmlReader.Create(new StringReader(sanitized));
             var serializer = new XmlSerializer(typeof(T));
@@ -60,6 +59,9 @@ namespace Obaki.DataChecker.Services
 
             return await _validator.ValidateAsync(objToValidate);
         }
+
+        [GeneratedRegex("[&%]")]
+        private static partial Regex RemovedXmlReservedCharacters();
     }
 
 }

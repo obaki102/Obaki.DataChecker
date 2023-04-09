@@ -1,7 +1,5 @@
 ﻿using Obaki.DataChecker.Services;
 using Obaki.DataChecker.Tests.TestHelper;
-using FluentValidation.TestHelper;
-using FluentValidation;
 
 namespace Obaki.DataChecker.Tests.Sync
 {
@@ -32,7 +30,7 @@ namespace Obaki.DataChecker.Tests.Sync
 
             //Assert
             Assert.NotNull(dummyObject);
-            Assert.Equal(dummyObject.Order[0].Customer, "John Doe");
+            Assert.Equal("John Doe", dummyObject.Order[0].Customer);
         }
 
 
@@ -55,9 +53,33 @@ namespace Obaki.DataChecker.Tests.Sync
 
             //Assert
             Assert.NotNull(dummyObject);
-            Assert.Equal(dummyObject.Order[0].Customer, "John   Doe");
-            Assert.True(!dummyObject.Order[0].Customer.Contains("&"));
-            Assert.True(!dummyObject.Order[0].Customer.Contains("%"));
+            Assert.Equal("John   Doe", dummyObject.Order[0].Customer);
+            Assert.True(!dummyObject.Order[0].Customer.Contains('&'));
+            Assert.True(!dummyObject.Order[0].Customer.Contains('%'));
+        }
+
+        [Fact]
+        public void DeserializeInputString_NoXmlInput_ShouldThrowArgumentNullException()
+        {
+            //Arrange
+            string xmlInput = string.Empty;
+            //Act
+            var action = new Action(()=> _xmlDataChecker.DeserializeInputString(xmlInput));
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(()=> action.Invoke());
+        }
+
+        [Fact]
+        public void DeserializeInputString_InValidXml_ShouldThrowInvalidOperationException()
+        {
+            //Arrange
+            string xmlInput = "<Invalid XML>";
+            //Act
+            var action = new Action(() => _xmlDataChecker.DeserializeInputString(xmlInput));
+
+            //Assert
+            Assert.Throws<InvalidOperationException>(() => action.Invoke());
         }
     }
 }
