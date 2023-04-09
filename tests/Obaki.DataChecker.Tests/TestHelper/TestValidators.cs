@@ -1,34 +1,55 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Obaki.DataChecker.Tests.TestHelper
 {
-    public class OrdersValidator : AbstractValidator<Orders>
+    public class XmlOrdersValidator : AbstractValidator<XmlOrders>
     {
-        public OrdersValidator()
+        public XmlOrdersValidator()
         {
-            RuleFor(orders => orders.Order.Count).GreaterThan(0);
-            RuleForEach(x => x.Order).SetValidator(new OrderValidator());
+            RuleFor(orders => orders.Orders.Count).GreaterThan(0);
+            RuleForEach(x => x.Orders).SetValidator(new XmlOrderValidator());
         }
     }
 
-    public class OrderValidator : AbstractValidator<Order>
+    public class XmlOrderValidator : AbstractValidator<XmlOrder>
     {
-        public OrderValidator()
+        public XmlOrderValidator()
         {
             RuleFor(order => order.Customer).NotEmpty();
-            RuleForEach(x => x.OrderItem).SetValidator(new OrderItemValidator());
+            RuleForEach(x => x.OrderItem).SetValidator(new XmlOrderItemValidator());
+        }
+    }
+
+    public class XmlOrderItemValidator : AbstractValidator<XmlOrderItem>
+    {
+        public XmlOrderItemValidator()
+        {
+            RuleFor(orderItem => orderItem.ItemId).NotNull();
         }
     }
 
 
-    public class OrderItemValidator : AbstractValidator<OrderItem>
+    public class JsonOrdersValidator : AbstractValidator<JsonOrders>
     {
-        public OrderItemValidator()
+        public JsonOrdersValidator()
+        {
+            RuleFor(orders => orders.Orders.Count).GreaterThan(0);
+            RuleForEach(x => x.Orders).SetValidator(new JsonOrderValidator());
+        }
+    }
+
+    public class JsonOrderValidator : AbstractValidator<JsonOrder>
+    {
+        public JsonOrderValidator()
+        {
+            RuleFor(order => order.Customer).NotEmpty();
+            RuleForEach(x => x.OrderItem).SetValidator(new JsonOrderItemValidator());
+        }
+    }
+
+    public class JsonOrderItemValidator : AbstractValidator<JsonOrderItem>
+    {
+        public JsonOrderItemValidator()
         {
             RuleFor(orderItem => orderItem.ItemId).NotNull();
         }

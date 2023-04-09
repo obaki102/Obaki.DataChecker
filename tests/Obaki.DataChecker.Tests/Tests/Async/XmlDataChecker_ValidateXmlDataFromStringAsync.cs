@@ -7,10 +7,10 @@ namespace Obaki.DataChecker.Tests.Tests.Async
 {
     public class XmlDataChecker_ValidateXmlDataFromStringAsync
     {
-        private readonly XmlDataChecker<Orders> _xmlDataChecker;
+        private readonly XmlDataChecker<XmlOrders> _xmlDataChecker;
         public XmlDataChecker_ValidateXmlDataFromStringAsync()
         {
-            _xmlDataChecker = new XmlDataChecker<Orders>(new OrdersValidator());
+            _xmlDataChecker = new XmlDataChecker<XmlOrders>(new XmlOrdersValidator());
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace Obaki.DataChecker.Tests.Tests.Async
         {
             //Arrange
             string xmlInput = string.Empty;
-            XmlDataChecker<Orders> _nullXmlDataChecker;
+            XmlDataChecker<XmlOrders> _nullXmlDataChecker;
 
             //Act
             var function = new Func<Task>(async () => await _xmlDataChecker.ValidateXmlDataFromStringAsync(xmlInput));
@@ -124,7 +124,7 @@ namespace Obaki.DataChecker.Tests.Tests.Async
                                 </Order>
                             </Orders>";
 
-            var mockXmlDataChecker = new Mock<IXmlDataChecker<Orders>>();
+            var mockXmlDataChecker = new Mock<IXmlDataChecker<XmlOrders>>();
             mockXmlDataChecker.Setup(x => x.ValidateXmlDataFromStringAsync(It.IsAny<string>())).Throws<ArgumentNullException>();
             //Act
             var function = new Func<Task>(async () => await mockXmlDataChecker.Object.ValidateXmlDataFromStringAsync(xmlInput));

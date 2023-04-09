@@ -8,10 +8,10 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
 {
     public class XmlDataChecker_ValidateXmlDataFromString
     {
-        private readonly XmlDataChecker<Orders> _xmlDataChecker;
+        private readonly XmlDataChecker<XmlOrders> _xmlDataChecker;
         public XmlDataChecker_ValidateXmlDataFromString()
         {
-            _xmlDataChecker = new XmlDataChecker<Orders>(new OrdersValidator());
+            _xmlDataChecker = new XmlDataChecker<XmlOrders>(new XmlOrdersValidator());
         }
 
         [Fact]
@@ -101,10 +101,10 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
         {
             //Arrange
             string xmlInput = string.Empty;
-            XmlDataChecker<Orders> _nullXmlDataChecker;
+            XmlDataChecker<XmlOrders> _nullXmlDataChecker;
 
             //Act
-            var action = new Action(() => _nullXmlDataChecker = new XmlDataChecker<Orders>(null));
+            var action = new Action(() => _nullXmlDataChecker = new XmlDataChecker<XmlOrders>(null));
 
             //Assert
             Assert.Throws<ArgumentNullException>(action);
@@ -125,7 +125,7 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
                                 </Order>
                             </Orders>";
 
-            var mockXmlDataChecker = new Mock<IXmlDataChecker<Orders>>();
+            var mockXmlDataChecker = new Mock<IXmlDataChecker<XmlOrders>>();
             mockXmlDataChecker.Setup(x => x.ValidateXmlDataFromString(It.IsAny<string>())).Throws<ArgumentNullException>();
 
             //Act

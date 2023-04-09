@@ -1,18 +1,14 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using Obaki.DataChecker.Interfaces;
-using System.Text.RegularExpressions;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Text.Json;
 
 namespace Obaki.DataChecker.Services
 {
-    internal sealed class XmlDataChecker<T> : IXmlDataChecker<T> where T : class
+    internal sealed class JsonDataChecker<T> : IJsonDataChecker<T> where T : class
     {
-        private const string XmlReservedCharactersPattern = "[&%]";
         private readonly IValidator<T> _validator;
-
-        public XmlDataChecker(IValidator<T> validator)
+        public JsonDataChecker(IValidator<T> validator)
         {
             _validator = validator ?? throw new ArgumentNullException(nameof(validator), $"No rules set up for validator of type {typeof(T)}.");
         }
@@ -24,22 +20,17 @@ namespace Obaki.DataChecker.Services
                 throw new ArgumentNullException(nameof(input), "Input string is null or empty.");
             }
 
-            string sanitized = Regex.Replace(input, XmlReservedCharactersPattern, "");
-
-            using var reader = XmlReader.Create(new StringReader(sanitized));
-            var serializer = new XmlSerializer(typeof(T));
-
             try
             {
-                return (T?)serializer.Deserialize(reader);
+                return JsonSerializer.Deserialize<T>(input);
             }
-            catch (InvalidOperationException ex)
+            catch (JsonException ex)
             {
-                throw new InvalidOperationException("Error deserializing XML string.", ex);
+                throw new JsonException("Error deserializing JSON string.", ex);
             }
         }
 
-        public ValidationResult ValidateXmlDataFromString(string input)
+        public ValidationResult ValidateJsonDataFromString(string input)
         {
             var objToValidate = DeserializeInputString(input);
             if (objToValidate is null)
@@ -50,7 +41,7 @@ namespace Obaki.DataChecker.Services
             return _validator.Validate(objToValidate);
         }
 
-        public async Task<ValidationResult> ValidateXmlDataFromStringAsync(string input)
+        public async Task<ValidationResult> ValidateJsonDataFromStringAsync(string input)
         {
             var objToValidate = DeserializeInputString(input);
             if (objToValidate is null)
@@ -60,6 +51,6 @@ namespace Obaki.DataChecker.Services
 
             return await _validator.ValidateAsync(objToValidate);
         }
-    }
 
+    }
 }

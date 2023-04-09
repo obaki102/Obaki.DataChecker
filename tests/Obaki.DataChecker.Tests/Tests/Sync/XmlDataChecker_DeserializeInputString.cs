@@ -5,10 +5,10 @@ namespace Obaki.DataChecker.Tests.Sync
 {
     public class XmlDataChecker_DeserializeInputString
     {
-        private readonly XmlDataChecker<Orders> _xmlDataChecker;
+        private readonly XmlDataChecker<XmlOrders> _xmlDataChecker;
         public XmlDataChecker_DeserializeInputString()
         {
-            _xmlDataChecker = new XmlDataChecker<Orders>(new OrdersValidator()); 
+            _xmlDataChecker = new XmlDataChecker<XmlOrders>(new XmlOrdersValidator()); 
         }
 
         [Fact]
@@ -30,7 +30,7 @@ namespace Obaki.DataChecker.Tests.Sync
 
             //Assert
             Assert.NotNull(dummyObject);
-            Assert.Equal("John Doe", dummyObject.Order[0].Customer);
+            Assert.Equal("John Doe", dummyObject.Orders[0].Customer);
         }
 
 
@@ -53,9 +53,9 @@ namespace Obaki.DataChecker.Tests.Sync
 
             //Assert
             Assert.NotNull(dummyObject);
-            Assert.Equal("John   Doe", dummyObject.Order[0].Customer);
-            Assert.True(!dummyObject.Order[0].Customer.Contains('&'));
-            Assert.True(!dummyObject.Order[0].Customer.Contains('%'));
+            Assert.Equal("John   Doe", dummyObject.Orders[0].Customer);
+            Assert.True(!dummyObject.Orders[0].Customer.Contains('&'));
+            Assert.True(!dummyObject.Orders[0].Customer.Contains('%'));
         }
 
         [Fact]

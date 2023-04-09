@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\Async\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\Obaki.DataChecker\Obaki.DataChecker.csproj" />
   </ItemGroup>
 
