@@ -151,7 +151,6 @@ namespace Obaki.DataChecker.Tests.Tests.Async
         {
             //Arrange
             string JsonInput = string.Empty;
-            JsonDataChecker<JsonOrders> _nullJsonDataChecker;
 
             //Act
             var function = new Func<Task>(async () => await _jsonDataChecker.ValidateJsonDataFromStringAsync(JsonInput));

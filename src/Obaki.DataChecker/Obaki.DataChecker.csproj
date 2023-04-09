@@ -1,10 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AssemblyName>$(MSBuildProjectName)</AssemblyName>
+		<Title>Obaki.DataChecker</Title>
+		<Version>1.0</Version>
+		<Authors>obaki102</Authors>
+		<Company>obaki102</Company>
+		<Description>Obaki.DataChecker is a flexible library that simplifies data validation for JSON and XML inputs. Use customized rules to verify data accuracy and reliability with ease.</Description>
+		<PackageId>Obaki.DataChecker</PackageId>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/obaki102/Obaki.DataChecker</RepositoryUrl>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.5.1" />

@@ -100,7 +100,6 @@ namespace Obaki.DataChecker.Tests.Tests.Async
         {
             //Arrange
             string xmlInput = string.Empty;
-            XmlDataChecker<XmlOrders> _nullXmlDataChecker;
 
             //Act
             var function = new Func<Task>(async () => await _xmlDataChecker.ValidateXmlDataFromStringAsync(xmlInput));
