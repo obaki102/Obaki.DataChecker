@@ -16,7 +16,7 @@ namespace Obaki.DataChecker.Extensions
             }
             services.AddScoped(typeof(IXmlDataChecker<>), typeof(XmlDataChecker<>));
             services.AddScoped(typeof(IJsonDataChecker<>), typeof(JsonDataChecker<>));
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
             return services;
         }
 
@@ -28,7 +28,7 @@ namespace Obaki.DataChecker.Extensions
             }
             services.AddSingleton(typeof(IXmlDataChecker<>), typeof(XmlDataChecker<>));
             services.AddSingleton(typeof(IJsonDataChecker<>), typeof(JsonDataChecker<>));
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
             return services;
         }
     }
