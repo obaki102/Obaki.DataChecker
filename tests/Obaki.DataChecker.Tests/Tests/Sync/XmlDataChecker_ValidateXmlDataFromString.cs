@@ -36,6 +36,52 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
         }
 
         [Fact]
+        public void ValidateXmlDataFromString_ValidXmlInputAndValidator_ShouldBeTrue()
+        {
+            //Arrange
+            string xmlInput = @"<Orders>
+                                <Order OrderId=""1"" Customer=""John Doe"">
+                                    <OrderItem ItemId=""101"" Description=""Widget"" Quantity=""3"" Price=""10.00"" />
+                                    <OrderItem ItemId=""102"" Description=""Gadget"" Quantity=""2"" Price=""15.00"" />
+                                </Order>
+                                <Order OrderId=""2"" Customer=""Jane Smith"">
+                                    <OrderItem ItemId=""201"" Description=""Thingamabob"" Quantity=""1"" Price=""25.00"" />
+                                </Order>
+                            </Orders>";
+
+            var dummyValidator = new XmlOrdersValidator();
+
+            //Act
+            var validate = _xmlDataChecker.ValidateXmlDataFromString(xmlInput, dummyValidator);
+
+            //Assert
+            Assert.True(validate.IsValid);
+        }
+
+        [Fact]
+        public void ValidateXmlDataFromString_ValidXmlInputAndNullValidator_ShouldThrowArgumentNullException()
+        {
+            //Arrange
+            string xmlInput = @"<Orders>
+                                <Order OrderId=""1"" Customer=""John Doe"">
+                                    <OrderItem ItemId=""101"" Description=""Widget"" Quantity=""3"" Price=""10.00"" />
+                                    <OrderItem ItemId=""102"" Description=""Gadget"" Quantity=""2"" Price=""15.00"" />
+                                </Order>
+                                <Order OrderId=""2"" Customer=""Jane Smith"">
+                                    <OrderItem ItemId=""201"" Description=""Thingamabob"" Quantity=""1"" Price=""25.00"" />
+                                </Order>
+                            </Orders>";
+
+            //Act
+            var action = new Action(() => _xmlDataChecker.ValidateXmlDataFromString(xmlInput,null));
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(action);
+        }
+
+
+
+        [Fact]
         public void ValidateXmlDataFromString_NoOrders_ShouldBeFalse()
         {
             //Arrange
@@ -44,6 +90,22 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
 
             //Act
             var validate = _xmlDataChecker.ValidateXmlDataFromString(xmlInput);
+
+            //Assert
+            Assert.False(validate.IsValid);
+        }
+
+        [Fact]
+        public void ValidateXmlDataFromString_NoOrdersWithValidator_ShouldBeFalse()
+        {
+            //Arrange
+            string xmlInput = @"<Orders>
+                            </Orders>";
+
+            var dummyValidator = new XmlOrdersValidator();
+
+            //Act
+            var validate = _xmlDataChecker.ValidateXmlDataFromString(xmlInput, dummyValidator);
 
             //Assert
             Assert.False(validate.IsValid);
@@ -71,6 +133,28 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
         }
 
         [Fact]
+        public void ValidateXmlDataFromString_CustomerIsEmptyWithValidator_ShouldBeFalse()
+        {
+            //Arrange
+            string xmlInput = @"<Orders>
+                                <Order OrderId=""1"" Customer="""">
+                                    <OrderItem ItemId=""101"" Description=""Widget"" Quantity=""3"" Price=""10.00"" />
+                                    <OrderItem ItemId=""102"" Description=""Gadget"" Quantity=""2"" Price=""15.00"" />
+                                </Order>
+                                <Order OrderId=""2"" Customer=""Test"">
+                                    <OrderItem ItemId=""201"" Description=""Thingamabob"" Quantity=""1"" Price=""25.00"" />
+                                </Order>
+                            </Orders>";
+            var dummyValidator = new XmlOrdersValidator();
+
+            //Act
+            var validate = _xmlDataChecker.ValidateXmlDataFromString(xmlInput, dummyValidator);
+
+            //Assert
+            Assert.False(validate.IsValid);
+        }
+
+        [Fact]
         public void ValidateXmlDataFromString_InValidXml_ShouldThrowInvalidOperationException()
         {
             //Arrange
@@ -84,6 +168,20 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
         }
 
         [Fact]
+        public void ValidateXmlDataFromString_InValidXmlWithValidator_ShouldThrowInvalidOperationException()
+        {
+            //Arrange
+            string xmlInput = "<Invalid XML>";
+            var dummyValidator = new XmlOrdersValidator();
+
+            //Act
+            var action = new Action(() => _xmlDataChecker.ValidateXmlDataFromString(xmlInput, dummyValidator));
+
+            //Assert
+            Assert.Throws<InvalidOperationException>(action);
+        }
+
+        [Fact]
         public void ValidateXmlDataFromString_NoXmlInput_ShouldThrowArgumentNullException()
         {
             //Arrange
@@ -91,6 +189,20 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
 
             //Act
             var action = new Action(() => _xmlDataChecker.ValidateXmlDataFromString(xmlInput));
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(action);
+        }
+
+        [Fact]
+        public void ValidateXmlDataFromString_NoXmlInputWithValidator_ShouldThrowArgumentNullException()
+        {
+            //Arrange
+            string xmlInput = string.Empty;
+            var dummyValidator = new XmlOrdersValidator();
+
+            //Act
+            var action = new Action(() => _xmlDataChecker.ValidateXmlDataFromString(xmlInput, dummyValidator));
 
             //Assert
             Assert.Throws<ArgumentNullException>(action);
