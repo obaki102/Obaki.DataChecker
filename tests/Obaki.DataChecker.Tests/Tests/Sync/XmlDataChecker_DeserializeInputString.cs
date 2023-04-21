@@ -33,13 +33,12 @@ namespace Obaki.DataChecker.Tests.Sync
             Assert.Equal("John Doe", dummyObject.Orders[0].Customer);
         }
 
-
         [Fact]
-        public void DeserializeInputString_InValidXmlInput_ShouldNotBeNullAndInputIsSanitized()
+        public void DeserializeInputString_InValidXmlInput_ShouldNotBeNull()
         {
             //Arrange
             string xmlInput = @"<Orders>
-                                <Order OrderId=""1"" Customer=""John & % Doe"">
+                                <Order OrderId=""1"" Customer=""John &amp; Doe"">
                                     <OrderItem ItemId=""101"" Description=""Widget"" Quantity=""3"" Price=""10.00"" />
                                     <OrderItem ItemId=""102"" Description=""Gadget"" Quantity=""2"" Price=""15.00"" />
                                 </Order>
@@ -53,9 +52,8 @@ namespace Obaki.DataChecker.Tests.Sync
 
             //Assert
             Assert.NotNull(dummyObject);
-            Assert.Equal("John   Doe", dummyObject.Orders[0].Customer);
-            Assert.True(!dummyObject.Orders[0].Customer.Contains('&'));
-            Assert.True(!dummyObject.Orders[0].Customer.Contains('%'));
+            Assert.Equal("John & Doe", dummyObject.Orders[0].Customer);
+            Assert.True(dummyObject.Orders[0].Customer.Contains('&'));
         }
 
         [Fact]

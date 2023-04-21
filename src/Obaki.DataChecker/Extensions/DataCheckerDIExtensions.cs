@@ -20,7 +20,7 @@ namespace Obaki.DataChecker.Extensions
             return services;
         }
 
-        public static IServiceCollection AddDataCheckerAsScopedAsSingleton(this IServiceCollection services)
+        public static IServiceCollection AddDataCheckerAsSingleton(this IServiceCollection services)
         {
             if (services == null)
             {
