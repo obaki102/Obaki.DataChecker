@@ -1,16 +1,14 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using Obaki.DataChecker.Interfaces;
-using System.Xml;
-using System.Xml.Serialization;
+using Obaki.DataChecker.Extensions;
+using System.Text.Json;
 
-namespace Obaki.DataChecker.Services
+namespace Obaki.DataChecker
 {
-    internal sealed class XmlDataChecker<T> : IXmlDataChecker<T> where T : class
+    internal sealed class JsonDataChecker<T> : IJsonDataChecker<T> where T : class
     {
         private readonly IValidator<T> _validator;
-
-        public XmlDataChecker(IValidator<T> validator)
+        public JsonDataChecker(IValidator<T> validator)
         {
             _validator = validator ?? throw new ArgumentNullException(nameof(validator), $"No rules set up for validator of type {typeof(T)}.");
         }
@@ -22,24 +20,37 @@ namespace Obaki.DataChecker.Services
                 throw new ArgumentNullException(nameof(input), "Input string is null or empty.");
             }
 
-        
-            using var reader = XmlReader.Create(new StringReader(input));
-            var serializer = new XmlSerializer(typeof(T));
-
             try
             {
-                return (T?)serializer.Deserialize(reader);
+                return JsonSerializer.Deserialize<T?>(input);
             }
-            catch (InvalidOperationException ex)
+            catch (JsonException ex)
             {
-                throw new InvalidOperationException("Error deserializing XML string.", ex);
+                throw new JsonException("Error deserializing JSON string.", ex);
             }
         }
 
-        public ValidationResult ValidateXmlDataFromString(string input)
+        public async Task<T?> DeserializeInputStringAsync(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                throw new ArgumentNullException(nameof(input), "Input string is null or empty.");
+            }
+
+            try
+            {
+                var streamValue = await input.ToStreamAsync() ?? throw new ArgumentNullException(nameof(input), "Input string is null or empty.");
+                return await JsonSerializer.DeserializeAsync<T?>(streamValue);
+            }
+            catch (JsonException ex)
+            {
+                throw new JsonException("Error deserializing JSON string.", ex);
+            }
+        }
+
+        public ValidationResult ValidateJsonDataFromString(string input)
         {
             var objToValidate = DeserializeInputString(input);
-
             if (objToValidate is null)
             {
                 throw new ArgumentNullException(nameof(objToValidate), "Deserialized object is null.");
@@ -48,32 +59,25 @@ namespace Obaki.DataChecker.Services
             return _validator.Validate(objToValidate);
         }
 
-        public ValidationResult ValidateXmlDataFromString(string input, IValidator<T> validator)
+        public ValidationResult ValidateJsonDataFromString(string input, IValidator<T> explicitValidator)
         {
-            if (validator is null)
+            if (explicitValidator is null)
             {
                 throw new ArgumentNullException(nameof(input), "Validator is null. Please define a validator");
             }
 
             var objToValidate = DeserializeInputString(input);
-
             if (objToValidate is null)
             {
                 throw new ArgumentNullException(nameof(objToValidate), "Deserialized object is null.");
             }
 
-            return validator.Validate(objToValidate);
+            return explicitValidator.Validate(objToValidate);
         }
 
-        public async Task<ValidationResult> ValidateXmlDataFromStringAsync(string input)
+        public async Task<ValidationResult> ValidateJsonDataFromStringAsync(string input)
         {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                throw new ArgumentNullException(nameof(input), "Input string is null or empty.");
-            }
-
-            var objToValidate = DeserializeInputString(input);
-
+            var objToValidate = await DeserializeInputStringAsync(input);
             if (objToValidate is null)
             {
                 throw new ArgumentNullException(nameof(objToValidate), "Deserialized object is null.");
@@ -82,27 +86,20 @@ namespace Obaki.DataChecker.Services
             return await _validator.ValidateAsync(objToValidate);
         }
 
-        public async Task<ValidationResult> ValidateXmlDataFromStringAsync(string input, IValidator<T> validator)
+        public async Task<ValidationResult> ValidateJsonDataFromStringAsync(string input, IValidator<T> explicitValidator)
         {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                throw new ArgumentNullException(nameof(input), "Input string is null or empty.");
-            }
-
-            if (validator is null)
+            if (explicitValidator is null)
             {
                 throw new ArgumentNullException(nameof(input), "Validator is null. Please define a validator");
             }
 
-            var objToValidate = DeserializeInputString(input);
-
+            var objToValidate = await DeserializeInputStringAsync(input);
             if (objToValidate is null)
             {
                 throw new ArgumentNullException(nameof(objToValidate), "Deserialized object is null.");
             }
 
-            return await validator.ValidateAsync(objToValidate);
+            return await explicitValidator.ValidateAsync(objToValidate);
         }
     }
-
 }

@@ -1,6 +1,4 @@
 ﻿using Moq;
-using Obaki.DataChecker.Interfaces;
-using Obaki.DataChecker.Services;
 using Obaki.DataChecker.Tests.TestHelper;
 using System.Text.Json;
 
@@ -208,6 +206,159 @@ namespace Obaki.DataChecker.Tests.Tests.Sync
             //Assert
             Assert.Throws<ArgumentNullException>(action);
 
+        }
+       
+
+        [Fact]
+        public void ValidateJsonDataFromString_ValidJsonInputWithExplictValidator_ShouldBeTrue()
+        {
+            //Arrange
+            string JsonInput = @"{
+                                ""Orders"": [
+                                    {
+                                        ""OrderId"": 1,
+                                        ""Customer"": ""John Doe"",
+                                        ""OrderItem"": [
+                                            {
+                                                ""ItemId"": 101,
+                                                ""Description"": ""Widget"",
+                                                ""Quantity"": 3,
+                                                ""Price"": 10.00
+                                            },
+                                            {
+                                                ""ItemId"": 102,
+                                                ""Description"": ""Gadget"",
+                                                ""Quantity"": 2,
+                                                ""Price"": 15.00
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        ""OrderId"": 2,
+                                        ""Customer"": ""Jane Smith"",
+                                        ""OrderItem"":[ {
+                                            ""ItemId"": 201,
+                                            ""Description"": ""Thingamabob"",
+                                            ""Quantity"": 1,
+                                            ""Price"": 5.00
+                                        }]
+                                    }
+                                ]
+                            }
+                        ";
+
+
+            var explicitValidator = new JsonOrdersValidator();
+            //Act
+            var validate = _jsonDataChecker.ValidateJsonDataFromString(JsonInput, explicitValidator);
+
+            //Assert
+            Assert.True(validate.IsValid);
+        }
+
+        [Fact]
+        public void ValidateJsonDataFromString_NoOrdersWithExplicitValidator_ShouldBeFalse()
+        {
+            //Arrange
+            string JsonInput = @"{
+                                ""Orders"": []
+                            }
+                        ";
+             var explicitValidator = new JsonOrdersValidator();  
+
+            //Act
+            var validate = _jsonDataChecker.ValidateJsonDataFromString(JsonInput, explicitValidator);
+
+            //Assert
+            Assert.False(validate.IsValid);
+        }
+
+        [Fact]
+        public void ValidateJsonDataFromString_CustomerIsEmptyWithExplicitValidator_ShouldBeFalse()
+        {
+            //Arrange
+            string JsonInput = @"{
+                                ""Orders"": [
+                                    {
+                                        ""OrderId"": 1,
+                                        ""Customer"":"""" ,
+                                        ""OrderItem"": [
+                                            {
+                                                ""ItemId"": 101,
+                                                ""Description"": ""Widget"",
+                                                ""Quantity"": 3,
+                                                ""Price"": 10.00
+                                            },
+                                            {
+                                                ""ItemId"": 102,
+                                                ""Description"": ""Gadget"",
+                                                ""Quantity"": 2,
+                                                ""Price"": 15.00
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        ""OrderId"": 2,
+                                        ""Customer"": ""Jane Smith"",
+                                        ""OrderItem"":[ {
+                                            ""ItemId"": 201,
+                                            ""Description"": ""Thingamabob"",
+                                            ""Quantity"": 1,
+                                            ""Price"": 5.00
+                                        }]
+                                    }
+                                ]
+                            }
+                        ";
+
+            var explicitValidator = new JsonOrdersValidator();
+
+            //Act
+            var validate = _jsonDataChecker.ValidateJsonDataFromString(JsonInput, explicitValidator);
+
+            //Assert
+            Assert.False(validate.IsValid);
+        }
+
+        [Fact]
+        public void ValidateJsonDataFromString_InValidJsonWithExpilcitValidator_ShouldThrowInvalidOperationException()
+        {
+            //Arrange
+            string JsonInput = "<Invalid Json>";
+            var explicitValidator = new JsonOrdersValidator();
+
+            //Act
+            var action = new Action(() => _jsonDataChecker.ValidateJsonDataFromString(JsonInput, explicitValidator));
+
+            //Assert
+            Assert.Throws<JsonException>(action);
+        }
+
+        [Fact]
+        public void ValidateJsonDataFromString_NoJsonInputWithExplicitValidator_ShouldThrowArgumentNullException()
+        {
+            //Arrange
+            string JsonInput = string.Empty;
+            var explicitValidator = new JsonOrdersValidator();
+
+            //Act
+            var action = new Action(() => _jsonDataChecker.ValidateJsonDataFromString(JsonInput, explicitValidator));
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(action);
+        }
+
+        [Fact]
+        public void ValidateJsonDataFromString_ExplicitValidatorIsNull_ShouldThrowArgumentNullException()
+        {
+            //Arrange
+            string JsonInput = string.Empty;
+
+            //Act
+            var action = new Action(() => _jsonDataChecker.ValidateJsonDataFromString(JsonInput, null));
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(action);
         }
 
     }

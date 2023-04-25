@@ -1,6 +1,4 @@
 ﻿using Moq;
-using Obaki.DataChecker.Interfaces;
-using Obaki.DataChecker.Services;
 using Obaki.DataChecker.Tests.TestHelper;
 using System.Net.Http;
 

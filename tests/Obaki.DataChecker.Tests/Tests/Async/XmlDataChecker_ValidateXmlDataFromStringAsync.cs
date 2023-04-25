@@ -1,6 +1,4 @@
 ﻿using Moq;
-using Obaki.DataChecker.Interfaces;
-using Obaki.DataChecker.Services;
 using Obaki.DataChecker.Tests.TestHelper;
 
 namespace Obaki.DataChecker.Tests.Tests.Async

@@ -1,5 +1,4 @@
-﻿using Obaki.DataChecker.Services;
-using Obaki.DataChecker.Tests.TestHelper;
+﻿using Obaki.DataChecker.Tests.TestHelper;
 
 namespace Obaki.DataChecker.Tests.Sync
 {

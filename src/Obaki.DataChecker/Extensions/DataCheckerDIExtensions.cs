@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using Obaki.DataChecker.Interfaces;
-using Obaki.DataChecker.Services;
 using System.Reflection;
 
 namespace Obaki.DataChecker.Extensions

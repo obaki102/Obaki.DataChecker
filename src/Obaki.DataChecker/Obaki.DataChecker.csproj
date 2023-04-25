@@ -6,7 +6,6 @@
 		<Nullable>enable</Nullable>
 		<AssemblyName>$(MSBuildProjectName)</AssemblyName>
 		<Title>Obaki.DataChecker</Title>
-		<Version>1.0.8</Version>
 		<Authors>obaki102</Authors>
 		<Company>obaki102</Company>
 		<Description>Obaki.DataChecker is a flexible library that simplifies data validation for JSON and XML inputs. Use customized rules to verify data accuracy and reliability with ease.</Description>
@@ -17,8 +16,8 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.5.1" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
+    <PackageReference Include="FluentValidation" Version="11.5.2" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
   </ItemGroup>
 
 </Project>
