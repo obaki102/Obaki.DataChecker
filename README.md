@@ -43,7 +43,7 @@ public void ConfigureServices(IServiceCollection services)
 ```c#
 using FluentValidation.Results;
 using FluentValidation;
-using Obaki.DataChecker.Interfaces;
+using Obaki.DataChecker;
 
 
 public class TestAsync {
@@ -65,7 +65,7 @@ public class TestAsync {
 ```c#
 using FluentValidation.Results;
 using FluentValidation;
-using Obaki.DataChecker.Interfaces;
+using Obaki.DataChecker;
 
 
 public class TestSync {
