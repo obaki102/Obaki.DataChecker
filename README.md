@@ -1,4 +1,4 @@
-# Obaki.DataChecker(In-Progress)
+# Obaki.DataChecker
 [![NuGet](https://img.shields.io/nuget/v/Obaki.DataChecker.svg)](https://www.nuget.org/packages/Obaki.DataChecker)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/Obaki.DataChecker?logo=nuget)](https://www.nuget.org/packages/Obaki.DataChecker)
 
