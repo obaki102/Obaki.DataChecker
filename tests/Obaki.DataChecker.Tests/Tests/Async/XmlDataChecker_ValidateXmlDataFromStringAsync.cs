@@ -156,7 +156,7 @@ namespace Obaki.DataChecker.Tests.Tests.Async
         }
 
         [Fact]
-        public void ValidateXmlDataFromStringAsync_InValidXml_ShouldThrowInvalidOperationException()
+        public async Task ValidateXmlDataFromStringAsync_InValidXml_ShouldThrowInvalidOperationException()
         {
             //Arrange
             string xmlInput = "<Invalid XML>";
@@ -165,11 +165,11 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _xmlDataChecker.ValidateXmlDataFromStringAsync(xmlInput));
 
            //Assert
-           Assert.ThrowsAsync<InvalidOperationException>(function);
+           await Assert.ThrowsAsync<InvalidOperationException>(function);
         }
 
         [Fact]
-        public void ValidateXmlDataFromStringAsync_InValidXmlWithValidator_ShouldThrowInvalidOperationException()
+        public async Task ValidateXmlDataFromStringAsync_InValidXmlWithValidator_ShouldThrowInvalidOperationException()
         {
             //Arrange
             string xmlInput = "<Invalid XML>";
@@ -179,24 +179,24 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _xmlDataChecker.ValidateXmlDataFromStringAsync(xmlInput, dummyValidator));
 
             //Assert
-            Assert.ThrowsAsync<InvalidOperationException>(function);
+            await Assert.ThrowsAsync<InvalidOperationException>(function);
         }
 
         [Fact]
-        public void ValidateXmlDataFromStringAsync_NoXmlInput_ShouldThrowArgumentNullException()
+        public async Task ValidateXmlDataFromStringAsync_NoXmlInput_ShouldThrowArgumentNullException()
         {
             //Arrange
-            string xmlInput = string.Empty;
+            string xmlInput = "";
 
             //Act
             var function = new Func<Task>(async () => await _xmlDataChecker.ValidateXmlDataFromStringAsync(xmlInput));
 
             //Assert
-            Assert.ThrowsAsync<InvalidOperationException>(function);
+           await Assert.ThrowsAsync<ArgumentNullException>(function);
         }
 
         [Fact]
-        public void ValidateXmlDataFromStringAsync_NoXmlInputWithValidator_ShouldThrowArgumentNullException()
+        public async Task ValidateXmlDataFromStringAsync_NoXmlInputWithValidator_ShouldThrowArgumentNullException()
         {
             //Arrange
             string xmlInput = string.Empty;
@@ -206,11 +206,11 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _xmlDataChecker.ValidateXmlDataFromStringAsync(xmlInput, dummyValidator));
 
             //Assert
-            Assert.ThrowsAsync<ArgumentNullException>(function);
+            await Assert.ThrowsAsync<ArgumentNullException>(function);
         }
 
         [Fact]
-        public void ValidateXmlDataFromStringAsync_NoXmlInputWithNullValidator_ShouldThrowInvalidOperationException()
+        public async Task ValidateXmlDataFromStringAsync_NoXmlInputWithNullValidator_ShouldThrowInvalidOperationException()
         {
             //Arrange
             string xmlInput = "Not empty";
@@ -221,11 +221,11 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _xmlDataChecker.ValidateXmlDataFromStringAsync(xmlInput, dummyValidator));
 
             //Assert
-            Assert.ThrowsAsync<InvalidOperationException>(function);
+            await Assert.ThrowsAsync<InvalidOperationException>(function);
         }
 
         [Fact]
-        public void ValidateXmlDataFromStringAsync_NullValidator_ShouldThrowArgumentNullException()
+        public async Task ValidateXmlDataFromStringAsync_NullValidator_ShouldThrowArgumentNullException()
         {
             //Arrange
             string xmlInput = string.Empty;
@@ -234,12 +234,12 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _xmlDataChecker.ValidateXmlDataFromStringAsync(xmlInput));
 
             //Assert
-            Assert.ThrowsAsync<ArgumentNullException>(function);
+            await Assert.ThrowsAsync<ArgumentNullException>(function);
         }
 
 
         [Fact]
-        public void ValidateXmlDataFromStringAsync_DeserializedObjectIsNull_ShouldThrowArgumentNullException()
+        public async Task ValidateXmlDataFromStringAsync_DeserializedObjectIsNull_ShouldThrowArgumentNullException()
         {
             //Arrange
             string xmlInput = @"<Orders>
@@ -258,7 +258,7 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await mockXmlDataChecker.Object.ValidateXmlDataFromStringAsync(xmlInput));
 
             //Assert
-            Assert.ThrowsAsync<ArgumentNullException>(function);
+            await Assert.ThrowsAsync<ArgumentNullException>(function);
 
         }
 

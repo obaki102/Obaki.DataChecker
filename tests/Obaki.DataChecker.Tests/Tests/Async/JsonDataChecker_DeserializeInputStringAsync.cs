@@ -60,7 +60,7 @@ namespace Obaki.DataChecker.Tests.Tests.Async
         }
 
         [Fact]
-        public void DeserializeInputString_NoJsonInput_ShouldThrowArgumentNullException()
+        public async Task DeserializeInputString_NoJsonInput_ShouldThrowArgumentNullException()
         {
             //Arrange
             string JsonInput = string.Empty;
@@ -69,11 +69,11 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _jsonDataChecker.DeserializeInputStringAsync(JsonInput));
 
             //Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => function.Invoke());
+            await Assert.ThrowsAsync<ArgumentNullException>(() => function.Invoke());
         }
 
         [Fact]
-        public void DeserializeInputString_InValidJson_ShouldThrowInvalidOperationException()
+        public async Task DeserializeInputString_InValidJson_ShouldThrowInvalidOperationException()
         {
             //Arrange
             string JsonInput = "<Invalid Json>";
@@ -82,12 +82,12 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _jsonDataChecker.DeserializeInputStringAsync(JsonInput));
 
             //Assert
-            Assert.ThrowsAsync<JsonException>(() => function.Invoke());
+            await Assert.ThrowsAsync<JsonException>(() => function.Invoke());
 
         }
 
         [Fact]
-        public void DeserializeInputString_InValidJson2_ShouldThrowInvalidOperationException()
+        public async Task DeserializeInputString_InValidJson2_ShouldThrowInvalidOperationException()
         {
             //Arrange
             string JsonInput = @"{
@@ -120,14 +120,14 @@ namespace Obaki.DataChecker.Tests.Tests.Async
                                         }]
                                     }
                                 ]
-                            }
+                           } }
                         ";
 
             //Act
             var function = new Func<Task>(async () => await _jsonDataChecker.DeserializeInputStringAsync(JsonInput));
 
             //Assert
-            Assert.ThrowsAsync<JsonException>(() => function.Invoke());
+            await Assert.ThrowsAsync<JsonException>(() => function.Invoke());
 
         }
     }

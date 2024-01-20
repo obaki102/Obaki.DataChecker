@@ -119,7 +119,7 @@ namespace Obaki.DataChecker.Tests.Tests.Async
         }
 
         [Fact]
-        public void ValidateJsonDataFromString_InValidJson_ShouldThrowInvalidOperationException()
+        public async Task ValidateJsonDataFromString_InValidJson_ShouldThrowJsonException()
         {
             //Arrange
             string JsonInput = "<Invalid Json>";
@@ -128,11 +128,11 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _jsonDataChecker.ValidateJsonDataFromStringAsync(JsonInput));
 
             //Assert
-            Assert.ThrowsAsync<JsonException>(function);
+            await Assert.ThrowsAsync<JsonException>(function);
         }
 
         [Fact]
-        public void ValidateJsonDataFromString_NoJsonInput_ShouldThrowArgumentNullException()
+        public async Task ValidateJsonDataFromString_NoJsonInput_ShouldThrowArgumentNullException()
         {
             //Arrange
             string JsonInput = string.Empty;
@@ -141,11 +141,11 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _jsonDataChecker.ValidateJsonDataFromStringAsync(JsonInput));
 
             //Assert
-            Assert.ThrowsAsync<JsonException>(function);
+           await Assert.ThrowsAsync<ArgumentNullException>(function);
         }
 
         [Fact]
-        public void ValidateJsonDataFromString_NullValidator_ShouldThrowArgumentNullException()
+        public async Task ValidateJsonDataFromString_NullValidator_ShouldThrowArgumentNullException()
         {
             //Arrange
             string JsonInput = string.Empty;
@@ -154,12 +154,12 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _jsonDataChecker.ValidateJsonDataFromStringAsync(JsonInput));
 
             //Assert
-            Assert.ThrowsAsync<JsonException>(function);
+            await Assert.ThrowsAsync<ArgumentNullException>(function);
         }
 
 
         [Fact]
-        public void ValidateJsonDataFromString_DeserializedObjectIsNull_ShouldThrowArgumentNullException()
+        public async Task ValidateJsonDataFromString_DeserializedObjectIsNull_ShouldThrowArgumentNullException()
         {
             //Arrange
             string JsonInput = @"{
@@ -203,7 +203,7 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await mockJsonDataChecker.Object.ValidateJsonDataFromStringAsync(JsonInput));
 
             //Assert
-            Assert.ThrowsAsync<JsonException>(function);
+            await Assert.ThrowsAsync<ArgumentNullException>(function);
 
         }
 
@@ -320,7 +320,7 @@ namespace Obaki.DataChecker.Tests.Tests.Async
         }
 
         [Fact]
-        public void ValidateJsonDataFromString_InValidJsonWithExplicitValidator_ShouldThrowInvalidOperationException()
+        public async Task ValidateJsonDataFromString_InValidJsonWithExplicitValidator_ShouldThrowJsonException()
         {
             //Arrange
             string JsonInput = "<Invalid Json>";
@@ -330,11 +330,11 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _jsonDataChecker.ValidateJsonDataFromStringAsync(JsonInput, explicitValidator));
 
             //Assert
-            Assert.ThrowsAsync<JsonException>(function);
+            await Assert.ThrowsAsync<JsonException>(function);
         }
 
         [Fact]
-        public void ValidateJsonDataFromString_NoJsonInputWithExplicitValidator_ShouldThrowArgumentNullException()
+        public async Task ValidateJsonDataFromString_NoJsonInputWithExplicitValidator_ShouldThrowArgumentNullException()
         {
             //Arrange
             string JsonInput = string.Empty;
@@ -344,11 +344,11 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _jsonDataChecker.ValidateJsonDataFromStringAsync(JsonInput, explicitValidator));
 
             //Assert
-            Assert.ThrowsAsync<JsonException>(function);
+            await Assert.ThrowsAsync<ArgumentNullException>(function);
         }
 
         [Fact]
-        public void ValidateJsonDataFromString_ExplicitValidatorIsNull_ShouldThrowArgumentNullException()
+        public async Task ValidateJsonDataFromString_ExplicitValidatorIsNull_ShouldThrowArgumentNullException()
         {
             //Arrange
             string JsonInput = string.Empty;
@@ -357,7 +357,7 @@ namespace Obaki.DataChecker.Tests.Tests.Async
             var function = new Func<Task>(async () => await _jsonDataChecker.ValidateJsonDataFromStringAsync(JsonInput,null));
 
             //Assert
-            Assert.ThrowsAsync<JsonException>(function);
+            await Assert.ThrowsAsync<ArgumentNullException>(function);
         }
        
     }

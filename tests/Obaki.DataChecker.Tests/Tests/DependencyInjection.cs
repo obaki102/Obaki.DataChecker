@@ -1,14 +1,7 @@
-﻿using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Obaki.DataChecker.Extensions;
 using Obaki.DataChecker.Tests.TestHelper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Formats.Asn1.AsnWriter;
+
 
 namespace Obaki.DataChecker.Tests.Tests
 {
