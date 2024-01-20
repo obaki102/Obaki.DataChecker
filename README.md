@@ -1,4 +1,4 @@
-# Obaki.DataChecker(In-Progress)
+# Obaki.DataChecker
 [![NuGet](https://img.shields.io/nuget/v/Obaki.DataChecker.svg)](https://www.nuget.org/packages/Obaki.DataChecker)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/Obaki.DataChecker?logo=nuget)](https://www.nuget.org/packages/Obaki.DataChecker)
 
@@ -43,7 +43,7 @@ public void ConfigureServices(IServiceCollection services)
 ```c#
 using FluentValidation.Results;
 using FluentValidation;
-using Obaki.DataChecker.Interfaces;
+using Obaki.DataChecker;
 
 
 public class TestAsync {
@@ -65,7 +65,7 @@ public class TestAsync {
 ```c#
 using FluentValidation.Results;
 using FluentValidation;
-using Obaki.DataChecker.Interfaces;
+using Obaki.DataChecker;
 
 
 public class TestSync {
